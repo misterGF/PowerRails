@@ -1,4 +1,4 @@
-function test-$name {
+function Test-$name {
   <#
   .SYNOPSIS
     Write a synopsis here

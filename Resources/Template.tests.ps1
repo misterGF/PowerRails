@@ -1,18 +1,17 @@
 # Pester testing. https://github.com/pester/Pester/wiki
-$sut = "$PSScriptRoot\$name"
+$myScript = "$PSScriptRoot\$fileName"
 
 Describe 'Unit Tests' {
-  Context 'Run Validation' {
+  Context 'Basic Validation' {
     it 'Should run successfully' {
-
-      if ($sut -like '*ps1') {
-        $run = invoke-expression $sut
+      if ($myScript -like '*ps1') {
+        $run = invoke-expression $myScript
       } else {
-        import-module $sut
-        $run = test-$name
+        import-module $myScript
+        $runCommand = test-$name
       }
 
-      $run | Should Match "Reporting from"
+      $runCommand | Should Match "Reporting from"
     }
   }
 }

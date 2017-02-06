@@ -1,4 +1,5 @@
-<#
+function New-PowerRailsModule {
+  <#
 .SYNOPSIS
   Scaffold a powershell module based on best practices.
 .DESCRIPTION
@@ -13,7 +14,6 @@
 .EXAMPLE
   New-PowerRailsModule -name 'MakeMyLifeEasier' -path 'c:\scripts\'
 #>
-function New-PowerRailsModule {
   [CmdletBinding()]
   Param(
     [Parameter(Position=0, Mandatory=$true)][string]$name,
@@ -32,94 +32,113 @@ function New-PowerRailsModule {
   $modulePath = "{0}\{1}" -f $path, $name
 
   # Write our starting output
-  write-PowerRailsStatus "Generating new module: $name" -type 'header'
+  write-PowerRailsStatus -line "Generating new module: $name" -type 'header'
 
   try {
-    write-error 'FUC'
+    # Create directory if needed
     if (!(test-path $modulePath)) {
-      Write-PowerRailsStatus "Generating module path: $modulePath"
+      Write-PowerRailsStatus -line "Generating module path: $modulePath"
       new-item -name $name -path $Path -type 'Directory' | Out-Null
     }
 
+    # Determine folders and files needed
     $requiredFiles = @('.editorconfig', 'build.ps1', 'psakeBuild.ps1', 'Template.psm1', 'Template.psd1', 'Template.psdeploy.ps1', 'Template.tests.ps1')
     $testFolder = get-item $PSScriptRoot
     $parentFolder = $testFolder.parent.FullName + '\Resources\'
 
+    # Create each file based on our resources
     foreach ($file in $requiredFiles) {
-      $filePath = $parentFolder + $file
-      $content = get-Content $filePath
+      $filePath = Join-Path $parentFolder $file # Our resource template
+      $content = get-Content $filePath # Content from the template file
 
-      switch($file) {
-        "build.ps1" {
-          # Just copy
-          Write-PowerRailsStatus "Copying Build.ps1"
-          copy-item $filePath $modulePath
+      $newFile = Join-Path $modulePath $file # Our new file
+
+      # Replace spaces with tabs when switch is passed
+      if ($useTabs) {
+        $content = $content.Replace($spaces, $tabs)
+      }
+
+      # Perform the proper action for each file
+      switch ($file) {
+        'build.ps1' {
+          # Generate file
+          Write-PowerRailsStatus "Generating $newFile"
+          $content | out-file $newFile -Encoding 'UTF8'
         }
-        ".editorconfig" {
-          # Just copy
-          Write-PowerRailsStatus "Copying .editorconfig"
-          copy-item $filePath $modulePath
+        '.editorconfig' {
+          # Fill in indent style and size
+          Write-PowerRailsStatus "Generating $newFile"
+
+          # determine values for editorconfig
+          if ($useTabs) {
+            $style = 'tab'
+          } else {
+            $style = 'space'
+          }
+
+          # fill in required values
+          $content = $content.replace('$indent_style', $style)
+
+          # Generate file
+          $content | out-file $newFile -encoding 'UTF8'
         }
-        "psakeBuild.ps1" {
+        'psakeBuild.ps1' {
           # Replace name in content and output to new file
-          Write-PowerRailsStatus "Generating psakeBuild.ps1"
+          Write-PowerRailsStatus "Generating $newFile"
           $content = $content.replace('$name', $Name)
           $content = $content.replace('$fileType', 'psm1')
 
-          $newFile = "$modulePath\$file"
+          # Generate file
           $content | out-file $newFile -encoding 'UTF8'
         }
-        "Template.psd1" {
+        'Template.psd1' {
           # Generate file name
-          $newName = $file.replace('Template', $name)
-          $newFile = "$modulePath\$newName"
-          Write-PowerRailsStatus "Generating $file"
+          $newFileName = $newFile.replace('Template', $name)
+          Write-PowerRailsStatus "Generating $newFileName"
 
           # Rename name and author
           $content = $content.replace('$Name', $Name)
           $content = $content.replace('$author', $Author)
 
           # Output file
-          $content | out-file $newFile -encoding 'UTF8'
+          $content | out-file $newFileName -encoding 'UTF8'
         }
-        "Template.psm1" {
+        'Template.psm1' {
           # Generate file name
-          $newName = $file.replace('Template', $name)
-          $newFile = "$modulePath\$newName"
-          Write-PowerRailsStatus "Generating $file"
+          $newFileName = $newFile.replace('Template', $name)
+          Write-PowerRailsStatus "Generating $newFileName"
 
           # Rename name, author & date
           $content = $content.replace('$name', $Name)
           $content = $content.replace('$author', $Author)
           $content = $content.replace('$date', $date)
-          # Output file
-          $content | out-file $newFile
-        }
-        "Template.tests.ps1" {
-          # Generate file name
-          $newName = $file.replace('Template', $name)
-          $newFile = "$modulePath\$newName"
-          Write-PowerRailsStatus "Generating $file"
-
-          # Rename file name
-          $fileName = $Name +".psm1"
-          $content = $content.replace('$name', $fileName)
 
           # Output file
-          $content | out-file $newFile -encoding 'UTF8'
+          $content | out-file $newFileName -encoding 'UTF8'
         }
-        "Template.psdeploy.ps1" {
+        'Template.tests.ps1' {
           # Generate file name
-          $newName = $file.replace('Template', $name)
-          $newFile = "$modulePath\$newName"
-          Write-PowerRailsStatus "Generating $file"
+          $newFileName = $newFile.replace('Template', $name)
+          Write-PowerRailsStatus "Generating $newFileName"
+
+          # Construct our module path so that we import it in our tests
+          $fileName = $Name + '.psm1'
+          $content = $content.replace('$name', $name)
+          $content = $content.replace('$fileName', $fileName)
+
+          # Output file
+          $content | out-file $newFileName -encoding 'UTF8'
+        }
+        'Template.psdeploy.ps1' {
+          # Generate file name
+          $newFileName = $newFile.replace('Template', $name)
+          Write-PowerRailsStatus "Generating $newFileName"
 
           # Replace variables name
-          $content = $content.replace('$name', $newName)
           $content = $content.replace('$module', $name)
 
           # Output file
-          $content | out-file $newFile -encoding 'UTF8'
+          $content | out-file $newFileName -encoding 'UTF8'
         }
       }
     }
@@ -129,4 +148,4 @@ function New-PowerRailsModule {
   }
 }
 
-New-PowerRailsModule -name 'cool'
+New-PowerRailsModule -name 'cool' -path c:\temp -useTabs
