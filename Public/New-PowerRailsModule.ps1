@@ -147,5 +147,3 @@ function New-PowerRailsModule {
     Write-PowerRailsStatus -line $errorMessage -type 'error'
   }
 }
-
-New-PowerRailsModule -name 'cool' -path c:\temp -useTabs
