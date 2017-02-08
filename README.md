@@ -26,6 +26,11 @@ There is only 1 cmdlet to learn. **New-PowerRailsItem**
 PowerRails is semi-opinioned in the tabs vs spaces discussion. We prefer spaces but I've included
 a switch to use tabs if you prefer.
 
+### Download & import module
+```powershell
+PS> Install-Module -Name PowerRails
+PS> Import-Module -Name PowerRails
+```
 
 ### Create a new script
 ```powershell
