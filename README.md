@@ -7,6 +7,8 @@ Most scripts/modules have a similar directory structure.
 You shouldn't waste your time creating it. Just use this module to
 get a head start and add to your new structure as needed.
 
+![PowerRails in action](http://res.cloudinary.com/gatec21/image/upload/v1486526550/2017-02-07_23-00-04_h75jvf.gif)
+
 **PowerRails will also helps you to become a better developer.**
 
 ## How?
