@@ -18,7 +18,7 @@ task Analyze {
 
 # Run our test to make sure everything is in line
 task Test {
-  $testResults = Invoke-Pester -Path "$root\test\PowerRails.test.ps1" -para
+  $testResults = Invoke-Pester -Path "$root\test\PowerRails.test.ps1"
 
   if ($testResults.FailedCount -gt 0) {
     $testResults | Format-List

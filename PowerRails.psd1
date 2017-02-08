@@ -3,7 +3,7 @@
   RootModule = 'PowerRails.psm1'
 
   # Version number of this module.
-  ModuleVersion = '0.0.5'
+  ModuleVersion = '0.0.6'
 
   # ID used to uniquely identify this module
   GUID = '622b72ea-1253-4d36-9c92-df4ce8d32648'
@@ -80,14 +80,16 @@
   # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
   PrivateData = @{
     PSData = @{
+      Title = 'PowerRails'
+      Summary = 'A module to generate your scripts folder structure.'
       # Tags applied to this module. These help with module discovery in online galleries.
-      Tags = @('continuous deployment', 'linting', 'module', 'unit testing')
+      Tags = @('continuous-deployment','linting','dev-tools','unit-testing')
 
       # A URL to the main website for this project.
       ProjectUri = 'https://github.com/misterGF/PowerRails'
       
       # A URL to an icon representing this module.
-      IconUri = 'https://github.com/misterGF/PowerRails/images/powerrails.svg'
+      IconUri = 'http://res.cloudinary.com/gatec21/image/upload/v1486523275/powerrails_pa2csc.png'
 
       # ReleaseNotes of this module
       ReleaseNotes = ''

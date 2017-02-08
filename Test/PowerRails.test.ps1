@@ -9,7 +9,7 @@ InModuleScope PowerRails {
   # Check that modules are installed
   Describe 'Load PowerRails' {
     It 'PowerRails modules is loaded' {
-      $powerRailsModule = get-module PowerRails
+      $powerRailsModule = get-module PowerRails -all
 
       $powerRailsModule | Should Be $true
     }

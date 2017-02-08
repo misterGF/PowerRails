@@ -1,3 +1,4 @@
 playground/
 temp/
+dist/*
 config.json

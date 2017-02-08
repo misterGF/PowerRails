@@ -25,7 +25,7 @@ function New-PowerRailsItem {
   Param(
     [Parameter(Mandatory=$true)][string]$name,
     [ValidateSet('script', 'module')][string]$type='module',
-    [string]$path='.',
+    [string]$path=(Get-Location).path,
     [switch]$useTabs
   )
 
@@ -53,11 +53,12 @@ function New-PowerRailsItem {
       }
 
       # Determine folders and files needed
+      # TODO : Removed '.editorconfig',  from the list since powershell online gallery doesn't support it. Add back when bug is fixed
       if ($type -eq 'module') {
-        $requiredFiles = @('.editorconfig', 'build.ps1', 'psakeBuild.ps1', 'Template.psm1', 'Template.psd1', 'Template.psdeploy.ps1', 'Template.tests.ps1')
+        $requiredFiles = @('build.ps1', 'psakeBuild.ps1', 'Template.psm1', 'Template.psd1', 'Template.psdeploy.ps1', 'Template.tests.ps1')
         $fileExtension = 'psm1'
       } else {
-        $requiredFiles = @('.editorconfig', 'build.ps1', 'psakeBuild.ps1', 'Template.ps1', 'Template.psdeploy.ps1', 'Template.tests.ps1')
+        $requiredFiles = @('build.ps1', 'psakeBuild.ps1', 'Template.ps1', 'Template.psdeploy.ps1', 'Template.tests.ps1')
         $fileExtension = 'ps1'
       }
 

@@ -20,19 +20,24 @@ We include the following helpers to keep you on track 🚆 (pun intended).
 ---
 
 ## Using PowerRails
-There are two cmdlets. **New-PowerRailsScript** and **New-PowerRailsModule**
+There is only 1 cmdlet to learn. **New-PowerRailsItem**
 PowerRails is semi-opinioned in the tabs vs spaces discussion. We prefer spaces but I've included
 a switch to use tabs if you prefer.
 
 
 ### Create a new script
 ```powershell
-PS> New-PowerRailsScript -name 'GitHubScrapper' -path '.'
+PS> New-PowerRailsItem -name 'GitHubScrapper' -type 'script' -path '.'
 ```
 
-### Create a new module
+### Create a new module (type is module by default)
 ```powershell
-PS> New-PowerRailsModule -name 'MakeMyLifeEasier' -path 'c:\scripts\'
+PS> New-PowerRailsItem -name 'MakeMyLifeEasier' -path 'c:\scripts\'
+```
+
+### Learn more
+```powershell
+PS> Get-Help New-PowerRailsItem
 ```
 
 ---
@@ -53,13 +58,16 @@ PS> .\build.ps1 -Task Test
 PS> .\build.ps1 -Task Analyze
 ```
 
-* Deploy the script via PSDeploy
+* Deploy the script via PSDeploy (runs all tests)
 ```powershell
 PS> .\build.ps1 -Task Deploy
 ```
+---
 
 
 This module was inspired by the post by [Dev Black Ops](https://devblackops.io/building-a-simple-release-pipeline-in-powershell-using-psake-pester-and-psdeploy/)
 Great read. Highly recommended.
 
 Big thanks to FreePik for the [logo]('http://www.freepik.com/free-photos-vectors/logo').
+
+## Don't forget to star this project if you like it!
