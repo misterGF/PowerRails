@@ -16,11 +16,13 @@ function Write-PowerRailsStatus {
   .EXAMPLE
     Write-PowerRailsStatus -line 'Hello world!' -type 'header'
   #>
+
   param(
     [Parameter(Mandatory=$true)][string]$line,
     [ValidateSet('header', 'info', 'task', 'success', 'error', 'warning')][string]$type='info',
     [int]$depth=1,
-    $spaces="  "
+    $spaces="  ",
+    $tabs = "	"
   )
 
   # Determine starting point.
@@ -60,5 +62,7 @@ function Write-PowerRailsStatus {
   }
 }
 
+# Helpers for generator
 $spaces = "  "
 $tabs = "	"
+

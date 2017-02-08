@@ -21,7 +21,7 @@
   Description = 'PowerShell module to scaffold scripts and modules. Based on best practicies from the community.'
 
   # Minimum version of the Windows PowerShell engine required by this module
-  PowerShellVersion = '3.0'
+  PowerShellVersion = '5.0'
 
   # Name of the Windows PowerShell host required by this module
   # PowerShellHostName = ''

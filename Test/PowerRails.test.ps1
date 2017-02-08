@@ -1,10 +1,8 @@
 # Determine our script root
-if(-not $PSScriptRoot) {
-  $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-}
+$root = Split-Path $PSScriptRoot -Parent
 
 # Load module via definition
-Import-Module $PSScriptRoot\..\PowerRails.psd1 -Force
+Import-Module $root\PowerRails.psd1 -Force
 
 # Run our module tests
 InModuleScope PowerRails {
@@ -12,32 +10,14 @@ InModuleScope PowerRails {
   Describe 'Load PowerRails' {
     It 'PowerRails modules is loaded' {
       $powerRailsModule = get-module PowerRails
+
       $powerRailsModule | Should Be $true
     }
   }
 
-  # Define name and where our module will be created
-  $TestPath = 'TestDrive:\'
-  $newModuleName = 'TestModule'
-  $moduleFullPath = $TestPath + $newModuleName
-  $moduleFile = $moduleFullPath +"\$newModuleName.psd1"
-
-  # Define name and where our script will be created
-  $newScriptName = 'TestScript'
-  $scriptFullPath = $TestPath + $newScriptName
-
-  # Test how our module responds to different inputs
-  Describe 'Module - Input validation' {
-    # Make sure that a name not given throws
-    It 'Throws if no name is given' { { New-PowerRailsModule -path $TestPath } | Should throw }
-
-    # Check path is given
-    It 'Throws if no path is given' { { New-PowerRailsModule -name $name } | Should throw }
-  }
-
-  Describe 'Module - Validate resource files' {
+  Describe 'New-PowerRailsItem - Validate resource files' {
     # Check and grab resources
-    $requiredFiles = @('build.ps1', 'psakeBuild.ps1', 'Template.psm1', 'Template.psd1', 'Template.psdeploy.ps1', 'Template.tests.ps1')
+    $requiredFiles = @('build.ps1', 'psakeBuild.ps1', 'Template.ps1', 'Template.psm1', 'Template.psd1', 'Template.psdeploy.ps1', 'Template.tests.ps1')
     $testFolder = get-item $PSScriptRoot
     $parentFolder = $testFolder.parent.FullName + '\Resources\'
 
@@ -50,30 +30,65 @@ InModuleScope PowerRails {
     }
   }
 
-  Describe 'Module - New-PowerRailsModule runs successfully' {
-    It "Generate module: $newModuleName" { { New-PowerRailsModule -Name $newModuleName -Path $TestPath | Out-Null } | Should Not throw }
+  Describe 'Module - Runs successfully' {
+    # Define name and where our module will be created
+    $TestPath = 'TestDrive:\'
+
+    $newModuleName = 'TestModule'
+    $moduleFullPath = $TestPath + $newModuleName
+    $moduleFile = $moduleFullPath +"\$newModuleName.psd1"
+    
+    It "Generate module: $newModuleName" { 
+      { New-PowerRailsItem -Name $newModuleName -Path $TestPath } | Should Not throw 
+    }
     
     It "Created module folder" {
       test-path $moduleFullPath | Should Be $true
     }
 
     # Verify that the resources were copied over
-    foreach ($file in $requiredFiles) {
-      $newName = $file.replace('Template', $newModuleName)
-      $checkFile = $moduleFullPath +"\"+ $newName
+    $exclude = @('template.ps1') # Script specific file
 
-      It "Check generated file: $checkFile" {
-        Test-Path $checkFile | Should Be $true
+    foreach ($file in $requiredFiles) {
+      if ($exclude -notcontains $file) {
+        $newName = $file.replace('Template', $newModuleName)
+        $checkFile = $moduleFullPath +"\"+ $newName
+
+        It "Check generated file: $checkFile" {
+          Test-Path $checkFile | Should Be $true
+        }
       }
     }
   }
+  
+  Describe 'Script - Runs successfully' {
+    # Define name and where our script will be created
+    $TestPath = 'TestDrive:\'
 
-  Describe 'Module - Can import and run' {
-    It "Importing $moduleFile" { { Import-Module $moduleFile -force } | Should Not throw }
+    $newScriptName = 'TestScript'
+    $scriptFullPath = $TestPath + $newScriptName
 
-    It "Running test-$newModuleName" {
-      $cmdlet = "Test-$newModuleName"
-      Invoke-Expression $cmdlet | Should Be "Reporting from test-$newModuleName function!"
+    It "Generate script: $scriptFullPath" { 
+      { New-PowerRailsItem -Name $newScriptName -Type 'script' -Path $TestPath } | Should Not throw
+    }
+    
+    It "Created script folder" {
+      test-path $scriptFullPath | Should Be $true
+    }
+
+    # Verify that the resources were copied over
+    $exclude = @('template.psm1', 'template.psd1') # module specific file
+
+    foreach ($file in $requiredFiles) {
+      if ($exclude -notcontains $file) {
+        $newName = $file.replace('Template', $newScriptName)
+        $checkFile = $scriptFullPath +"\"+ $newName
+
+        It "Check generated file: $checkFile" {
+          Test-Path $checkFile | Should Be $true
+        }
+      }
     }
   }
+}
 
