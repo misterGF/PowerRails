@@ -3,7 +3,7 @@
   RootModule = 'PowerRails.psm1'
 
   # Version number of this module.
-  ModuleVersion = '0.0.7'
+  ModuleVersion = '0.0.8'
 
   # ID used to uniquely identify this module
   GUID = '622b72ea-1253-4d36-9c92-df4ce8d32648'
