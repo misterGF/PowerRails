@@ -135,7 +135,7 @@ function New-PowerRailsItem {
             # Output file
             $content | out-file $newFileName -encoding 'UTF8'
           }
-          "Template.ps1" {
+          'Template.ps1' {
             # Generate file name
             $newFileName = $newFile.replace('Template', $name)
             Write-PowerRailsStatus "Generating $newFileName"
@@ -146,7 +146,7 @@ function New-PowerRailsItem {
             $content = $content.replace('$date', $date)
 
             # Output file
-            $content | out-file $newFile -encoding 'UTF8'
+            $content | out-file $newFileName -encoding 'UTF8'
           }
           'Template.tests.ps1' {
             # Generate file name
