@@ -17,7 +17,7 @@ We include the following helpers to keep you on track 🚆 (pun intended).
 - [Script Analyzer](https://github.com/PowerShell/PSScriptAnalyzer/tree/development/RuleDocumentation) is a set of rules that are based on guidance from the PowerShell team. By default we enforce these rules.
 - [Pester](https://github.com/pester/Pester/wiki) is a framework for running unit tests to execute and validate PowerShell commands. You should test your code. Pester helps you with that. Sample tests included.
 - [PSake](http://psake.readthedocs.io/en/latest) is a build automation tool written in PowerShell. Builds glue everything together. Analyze your script, run your unit testing and deploy!
-- [PSDeploy](http://ramblingcookiemonster.github.io/PSDeploy/) is a quick and dirty module that simplifies deploymentsis a quick and dirty module that simplifies deployments. If everything checks out, deploy our script to where ever you'd like.
+- [PSDeploy](http://ramblingcookiemonster.github.io/PSDeploy/) is a quick and dirty module that simplifies deployments. If everything checks out, deploy our script to where ever you'd like.
 
 ---
 

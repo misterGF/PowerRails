@@ -3,7 +3,7 @@
   RootModule = 'PowerRails.psm1'
 
   # Version number of this module.
-  ModuleVersion = '0.0.8'
+  ModuleVersion = '0.0.9'
 
   # ID used to uniquely identify this module
   GUID = '622b72ea-1253-4d36-9c92-df4ce8d32648'
@@ -83,7 +83,7 @@
       Title = 'PowerRails'
       Summary = 'A module to generate your scripts folder structure.'
       # Tags applied to this module. These help with module discovery in online galleries.
-      Tags = @('continuous-deployment','linting','dev-tools','unit-testing')
+      Tags = @('continuous-deployment', 'linting', 'dev-tools', 'unit-testing')
 
       # A URL to the main website for this project.
       ProjectUri = 'https://github.com/misterGF/PowerRails'
